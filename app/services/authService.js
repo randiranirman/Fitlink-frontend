@@ -16,3 +16,10 @@ import axios from "axios"
     }
 
  }
+
+// Default export for the service
+const authService = {
+  registerUser
+};
+
+export default authService;

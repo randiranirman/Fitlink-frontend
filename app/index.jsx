@@ -1,6 +1,8 @@
 import { View, Text, Pressable, Animated, Dimensions } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import './global.css'
+import { useRouter } from "expo-router";
+
 
 const { width, height } = Dimensions.get('window');
 
@@ -9,6 +11,9 @@ export default function Index() {
   const slideAnim = useRef(new Animated.Value(50)).current;
   const scaleAnim = useRef(new Animated.Value(0.9)).current;
   const [buttonPressed, setButtonPressed] = useState(false);
+
+  const router = useRouter();
+
 
   useEffect(() => {
     // Staggered animations for smooth entrance
@@ -48,6 +53,9 @@ export default function Index() {
         useNativeDriver: true,
       }),
     ]).start();
+
+    // Navigate to choose role screen
+    router.push('/screen/chooseRole');
 
     // Reset after animation
     setTimeout(() => setButtonPressed(false), 200);
