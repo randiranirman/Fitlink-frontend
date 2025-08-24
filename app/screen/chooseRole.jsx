@@ -23,28 +23,28 @@ const ChooseRole = () => {
 
   const roles = [
     {
-      id: 'client',
-      title: 'Client',
-      subtitle: 'Track & Achieve',
+      id: 'fitness-enthusiast',
+      title: 'Fitness Enthusiast',
+      subtitle: 'Track & Connect',
       icon: '🏃‍♂️',
-      description: 'Perfect for individuals who want to connect with trainers and track their fitness progress',
+      description: 'Perfect for fitness lovers who want to track progress and connect with others',
       features: [
-        'Connect with personal trainers',
         'Track workouts and progress',
-        'Book training sessions',
-        'Monitor fitness goals',
-        'Access workout plans'
+        'Connect with fitness buddies',
+        'Join community challenges',
+        'Share achievements',
+        'Get workout recommendations'
       ],
       color: 'from-green-500 to-green-600',
       borderColor: 'border-green-500',
       bgColor: 'bg-green-500'
     },
     {
-      id: 'trainer',
-      title: 'Trainer',
+      id: 'personal-trainer',
+      title: 'Personal Trainer',
       subtitle: 'Coach & Guide',
       icon: '💪',
-      description: 'For certified trainers who want to manage clients and grow their fitness business',
+      description: 'For certified trainers who want to manage clients and grow their business',
       features: [
         'Manage multiple clients',
         'Create custom workout plans',
@@ -100,15 +100,11 @@ const ChooseRole = () => {
                 key={role.id}
                 style={{
                   opacity: fadeAnim,
-                  transform: [{ 
-                    translateY: slideAnim
-                  }, {
-                    translateX: index % 2 === 0 ? -10 : 10 
-                  }]
+                  transform: [{ translateY: slideAnim }]
                 }}
               >
                 <Pressable
-                  className={`bg-gray-900 rounded-2xl p-6 border-2 ${
+                  className={`bg-gray-900 rounded-2xl p-6 border-2 min-h-[220px] ${
                     selectedRole === role.id 
                       ? role.borderColor + ' border-opacity-100' 
                       : 'border-gray-800'
@@ -126,36 +122,38 @@ const ChooseRole = () => {
                   ]}
                 >
                   {/* Role Header */}
-                  <View className="flex-row items-center mb-4">
-                    <View className={`w-12 h-12 ${role.bgColor} rounded-xl justify-center items-center mr-4`}>
+                  <View className="flex-row items-start mb-4">
+                    <View className={`w-12 h-12 ${role.bgColor} rounded-xl justify-center items-center mr-4 flex-shrink-0`}>
                       <Text className="text-2xl">{role.icon}</Text>
                     </View>
-                    <View className="flex-1">
-                      <Text className="text-white text-xl font-bold">
+                    <View className="flex-1 min-h-[48px] justify-center">
+                      <Text className="text-white text-xl font-bold leading-6">
                         {role.title}
                       </Text>
-                      <Text className="text-gray-400 text-sm font-medium">
+                      <Text className="text-gray-400 text-sm font-medium mt-1">
                         {role.subtitle}
                       </Text>
                     </View>
-                    {selectedRole === role.id && (
-                      <View className="w-6 h-6 bg-green-500 rounded-full justify-center items-center">
-                        <Text className="text-black text-xs font-bold">✓</Text>
-                      </View>
-                    )}
+                    <View className="w-6 h-6 flex-shrink-0 justify-center items-center">
+                      {selectedRole === role.id && (
+                        <View className="w-6 h-6 bg-green-500 rounded-full justify-center items-center">
+                          <Text className="text-black text-xs font-bold">✓</Text>
+                        </View>
+                      )}
+                    </View>
                   </View>
 
                   {/* Description */}
-                  <Text className="text-gray-300 text-sm mb-4 leading-5">
+                  <Text className="text-gray-300 text-sm mb-4 leading-5 min-h-[40px]">
                     {role.description}
                   </Text>
 
                   {/* Features */}
-                  <View className="space-y-2">
+                  <View className="flex-1 justify-start">
                     {role.features.map((feature, idx) => (
-                      <View key={idx} className="flex-row items-center">
-                        <View className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3" />
-                        <Text className="text-gray-400 text-sm flex-1">
+                      <View key={idx} className="flex-row items-start mb-2">
+                        <View className="w-1.5 h-1.5 bg-green-500 rounded-full mr-3 mt-2 flex-shrink-0" />
+                        <Text className="text-gray-400 text-sm flex-1 leading-5">
                           {feature}
                         </Text>
                       </View>
