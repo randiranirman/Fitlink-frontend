@@ -1,5 +1,7 @@
 import { View, Text, Pressable, Animated, ScrollView } from "react-native";
 import { useEffect, useRef, useState } from "react";
+import { router } from "expo-router";
+import login from './login'
 
 const ChooseRole = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -66,6 +68,9 @@ const ChooseRole = () => {
     if (selectedRole) {
       // Navigate to next screen
       console.log('Selected role:', selectedRole);
+       // Navigate to choose role screen
+    router.push('/screen/login');
+      
     }
   };
 
