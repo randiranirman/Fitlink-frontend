@@ -1,19 +1,53 @@
 import { View, Text, TextInput, Pressable, Animated, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useEffect, useRef, useState } from "react";
+import { registerUser } from "../services/authService";
 
 const Register = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
   const slideAnim = useRef(new Animated.Value(30)).current;
   const [formData, setFormData] = useState({
-    fullName: '',
+    name: '',
     email: '',
     password: '',
     confirmPassword: ''
   });
+
+  
+
+   
+
   const [isLoading, setIsLoading] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [acceptTerms, setAcceptTerms] = useState(false);
+
+  const handleSubmit = async () => {
+  if (!isFormValid()) return;
+
+  setIsLoading(true);
+
+  const requestBody = {
+    name: formData.name,
+    email: formData.email,
+    password: formData.password,
+    confirmPassword: formData.confirmPassword,
+    appUserRole: "CLIENT",
+    username: formData.email
+  };
+
+   console.log( requestBody)
+
+  try {
+    const response = await registerUser(requestBody);
+    console.log("User registered successfully:", response);
+    // You can redirect or clear form here
+  } catch (error) {
+    console.log("Something went wrong:", error);
+  } finally {
+    setIsLoading(false);
+  }
+};
+
 
   useEffect(() => {
     Animated.parallel([
@@ -35,9 +69,9 @@ const Register = () => {
   };
 
   const isFormValid = () => {
-    const { fullName, email, password, confirmPassword } = formData;
+    const { name, email, password, confirmPassword } = formData;
     return (
-      fullName.trim().length >= 2 &&
+      name.trim().length >= 2 &&
       email.includes('@') &&
       password.length >= 6 &&
       password === confirmPassword &&
@@ -60,10 +94,7 @@ const Register = () => {
     if (isFormValid()) {
       setIsLoading(true);
       // Simulate registration process
-      setTimeout(() => {
-        setIsLoading(false);
-        console.log('Registration attempt:', formData);
-      }, 2000);
+      registerUser( formData);
     }
   };
 
@@ -130,8 +161,8 @@ const Register = () => {
                   className="text-white p-4 text-base"
                   placeholder="Enter your full name"
                   placeholderTextColor="#6b7280"
-                  value={formData.fullName}
-                  onChangeText={(value) => updateFormData('fullName', value)}
+                  value={formData.name}
+                  onChangeText={(value) => updateFormData('name', value)}
                   autoCapitalize="words"
                   autoComplete="name"
                 />
@@ -150,7 +181,7 @@ const Register = () => {
                   placeholderTextColor="#6b7280"
                   value={formData.email}
                   onChangeText={(value) => updateFormData('email', value)}
-                  keyboardType="email-address"
+                  keyboardType="email-addres"
                   autoCapitalize="none"
                   autoComplete="email"
                 />
@@ -269,7 +300,7 @@ const Register = () => {
                   ? 'bg-green-500' 
                   : 'bg-gray-700'
               }`}
-              onPress={handleRegister}
+              onPress={ handleSubmit}
               disabled={!isFormValid() || isLoading}
               style={({ pressed }) => [
                 {
