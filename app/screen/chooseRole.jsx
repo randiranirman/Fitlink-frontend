@@ -28,6 +28,7 @@ const ChooseRole = () => {
       id: 'fitness-enthusiast',
       title: 'Fitness Enthusiast',
       subtitle: 'Track & Connect',
+      
       icon: '🏃‍♂️',
       description: 'Perfect for fitness lovers who want to track progress and connect with others',
       features: [
