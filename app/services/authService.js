@@ -4,6 +4,25 @@ import { router } from "expo-router";
 
 
 const API_URL = "http://192.168.8.108:8080/api/auth";
+export const loginUser =  async ( requestBody ) => {
+  try  {
+    const response = await axios.post(`${API_URL}/login`, requestBody);
+
+    if(response.status ===200) {
+       router.push( '../roles/Client/clientScreens/clientDashboard');
+
+
+    }
+
+    return response.data;
+    
+
+  }catch( error) {
+    console.log( "something went  wrong " + error)
+
+  }
+
+}
 
 export const registerUser = async (requestBody) => {
   try {

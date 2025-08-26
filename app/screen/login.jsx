@@ -1,6 +1,7 @@
 import { View, Text, TextInput, Pressable, Animated, KeyboardAvoidingView, Platform, ScrollView } from "react-native";
 import { useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
+import { loginUser } from "../services/authService";
 
 const Login = () => {
   const fadeAnim = useRef(new Animated.Value(0)).current;
@@ -25,14 +26,27 @@ const Login = () => {
     ]).start();
   }, []);
 
-  const handleLogin = () => {
+  const handleLogin = async  () => {
     if (email && password) {
       setIsLoading(true);
-      // Simulate login process
-      setTimeout(() => {
-        setIsLoading(false);
-        console.log('Login attempt:', { email, password });
-      }, 2000);
+      const requestBody = {
+        username: email,
+        password: password
+      }
+
+
+      console.log(requestBody)
+      try { 
+         const response = await  loginUser( requestBody);
+         console.log("user registered successfylly ")
+         
+      }catch( error) {
+        console.log("some thigns happens " + error);
+      }finally{
+        setIsLoading( false)
+      }
+
+      
     }
   };
 
@@ -166,7 +180,7 @@ const Login = () => {
                 }
               ]}
             >
-              <Text className={`text-center text-lg font-bold ${
+              <Text onPress={handleLogin} className={`text-center text-lg font-bold ${
                 email && password && !isLoading ? 'text-black' : 'text-gray-500'
               }`}>
                 {isLoading ? 'Signing In...' : 'Sign In'}
