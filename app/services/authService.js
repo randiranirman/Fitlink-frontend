@@ -9,13 +9,13 @@ export const loginUser =  async ( requestBody ) => {
     const response = await axios.post(`${API_URL}/login`, requestBody);
 
     if(response.status ===200) {
-       router.push( '../roles/Client/clientScreens/clientDashboard');
+       router.push('../roles/Client/clientScreens/clientDashboard');
 
 
     }
 
     return response.data;
-    
+
 
   }catch( error) {
     console.log( "something went  wrong " + error)
@@ -35,7 +35,7 @@ export const registerUser = async (requestBody) => {
 
     // Check status
     if (response.status === 200) {
-      router.push( '../roles/Client/clientScreens/clientDashboard');
+      router.push( '../roles/Client/clientScreens/clientDashboard.jsx');
     }
 
     console.log("Registered:", requestBody);
