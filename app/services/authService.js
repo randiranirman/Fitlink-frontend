@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 
 
-const API_URL = "http://192.168.8.108:8080/api/auth";
+const API_URL = "http:///10.10.29.123:8080/api/auth";
 export const loginUser =  async ( requestBody ) => {
   try  {
     const response = await axios.post(`${API_URL}/login`, requestBody);
