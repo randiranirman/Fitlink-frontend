@@ -1,6 +1,6 @@
 import { View, Text, Pressable, Animated, Dimensions, ScrollView } from "react-native";
 import { useEffect, useRef, useState } from "react";
-
+import { router } from "expo-router";
 const { width } = Dimensions.get('window');
 
 // Sidebar Component
@@ -40,14 +40,15 @@ const ClientSideBar = ({ isVisible, onClose, onNavigate }) => {
 
   const menuItems = [
     { id: 'home', title: 'Home', icon: '🏠', screen: 'Home' },
-    { id: 'dashboard', title: 'Dashboard', icon: '📊', screen: 'Dashboard' },
+    { id: 'searchTrainer', title: 'Search Trainers', icon: '📊', screen: '../clientScreens/clientSearchTrainer' },
     { id: 'profile', title: 'Profile', icon: '👤', screen: 'Profile' },
     { id: 'settings', title: 'Settings', icon: '⚙️', screen: 'Settings' },
     { id: 'logout', title: 'Log Out', icon: '🚪', screen: 'Logout', danger: true },
+    
   ];
 
   const handleNavigation = (item) => {
-    onNavigate(item.screen);
+    router.push(item.screen);
     onClose();
   };
 
