@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 
-const API_URL = "http:///10.10.29.123:8080/api/clients"
+const API_URL = "http:///192.168.8.108:8080/api/clients"
 
 
 
@@ -22,5 +22,17 @@ export const searchTrainerByName  = async ( trainerName ) => {
 
 
     
+
+}
+
+export const registerForTrainer =  async  (requestBody)  => {
+
+
+  try {
+
+
+  }catch ( error) {
+    console.log( "some thing went wrong " + error);
+  }
 
 }
