@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+
 import { 
   View, 
   Text, 
@@ -11,6 +12,7 @@ import {
 } from 'react-native';
 
 import { searchTrainerByName } from '../../../services/clientRegisterTrainerService';
+import { router } from 'expo-router';
 
 const ClientSearchTrainer = () => {
   const [searchQuery, setSearchQuery] = useState('');
@@ -45,21 +47,11 @@ const ClientSearchTrainer = () => {
   };
 
   const selectTrainer = (trainer) => {
-    Alert.alert(
-      'Select Trainer',
-      `Do you want to select ${trainer.name} as your trainer?`,
-      [
-        { text: 'Cancel', style: 'cancel' },
-        { 
-          text: 'Select', 
-          onPress: () => {
-            // Handle trainer selection logic here
-            console.log('Selected trainer:', trainer);
-            Alert.alert('Success', `${trainer.name} has been selected as your trainer!`);
-          }
-        }
-      ]
-    );
+      
+
+
+   
+    router.push('./clientTrainerRegistration')
   };
 
   const renderTrainerItem = ({ item }) => (
