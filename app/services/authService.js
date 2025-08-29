@@ -1,7 +1,7 @@
 import axios from "axios";
 import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
-
+import { jwtDecode } from "jwt-decode";
 
 const API_URL = "http://10.10.42.111:8080/api/auth";
 export const loginUser =  async ( requestBody ) => {
@@ -46,3 +46,30 @@ export const registerUser = async (requestBody) => {
     throw error;
   }
 };
+
+
+//  this is  the function for the decoding part 
+export const jwtDecodeClaims = (token   ) =>  { 
+
+
+  try  { 
+       if( !token) return null ;
+
+
+
+        const decoded = jwtDecode( token);
+
+
+         return {
+      id: decoded.id || null,
+      role: decoded.role || null,
+      name: decoded.name || null, // only works if you add "name" claim in backend
+      email: decoded.sub || null, // "sub" holds username/email
+    };
+
+  }catch( error) {
+    console.log( error + "failed to decode the  token ");
+  }
+  
+
+}
