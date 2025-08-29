@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useRouter } from 'expo-router';
 
 import { 
   View, 
@@ -19,6 +20,7 @@ const ClientSearchTrainer = () => {
   const [trainers, setTrainers] = useState([]);
   const [loading, setLoading] = useState(false);
   const [hasSearched, setHasSearched] = useState(false);
+  const router = useRouter();
 
   const handleSearch = async () => {
     if (!searchQuery.trim()) {
@@ -47,11 +49,25 @@ const ClientSearchTrainer = () => {
   };
 
   const selectTrainer = (trainer) => {
+
+    router.push({
+      pathname:"../clientScreens/clientTrainerRegistration",
+      params: {trainer:JSON.stringify(trainer)},
       
+
+    })
+
+    console.log(trainer)
+
+      
+        
+
+
 
 
    
-    router.push('./clientTrainerRegistration')
+  
+     
   };
 
   const renderTrainerItem = ({ item }) => (
