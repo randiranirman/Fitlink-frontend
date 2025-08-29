@@ -10,12 +10,14 @@ import {
   ActivityIndicator
 } from 'react-native';
 import axios from 'axios';
+import { useLocalSearchParams } from 'expo-router';
 
 const API_URL = "http://10.10.29.123:8080/api/clients";
 
 const ClientRegisterWithTrainer = ({ route, navigation }) => {
   // Get trainer data from navigation params
-  const { trainer } = route?.params || {};
+  const { trainer } = useLocalSearchParams();
+  const parsedTrainer = trainer ?  JSON.parse(trainer) : null
   
   const [formData, setFormData] = useState({
     name: '',
@@ -33,12 +35,12 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
 
   // If no trainer data, show error
   useEffect(() => {
-    if (!trainer) {
+    if (!parsedTrainer) {
       Alert.alert('Error', 'No trainer selected', [
         { text: 'OK', onPress: () => navigation?.goBack() }
       ]);
     }
-  }, [trainer, navigation]);
+  }, [parsedTrainer, navigation]);
 
   const validateForm = () => {
     const newErrors = {};
@@ -132,7 +134,7 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
         height: parseFloat(formData.height),
         gender: formData.gender.trim(),
         age: parseFloat(formData.age),
-        trainerId: trainer.id // Include trainer ID for registration
+        trainerId: parsedTrainer.id // Include trainer ID for registration
       };
 
       const response = await axios.post(`${API_URL}/registerWithTrainer`, payload, {
@@ -168,7 +170,7 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
     }
   };
 
-  const genderOptions = ['Male', 'Female', 'Other'];
+  const genderOptions = ['Male', 'Female'];
 
   const renderInput = (label, field, placeholder, keyboardType = 'default', multiline = false) => (
     <View className="mb-4">
@@ -219,7 +221,7 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
     </View>
   );
 
-  if (!trainer) {
+  if (!parsedTrainer) {
     return (
       <SafeAreaView className="flex-1 bg-black items-center justify-center">
         <ActivityIndicator size="large" color="#22c55e" />
@@ -268,13 +270,13 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
               </View>
               <View className="bg-green-500 w-16 h-16 rounded-full items-center justify-center ml-4">
                 <Text className="text-black font-bold text-2xl">
-                  {trainer.name.charAt(0).toUpperCase()}
+                  {parsedTrainer.name.charAt(0).toUpperCase()}
                 </Text>
               </View>
             </View>
             <View className="bg-zinc-700 h-px my-4" />
             <Text className="text-zinc-300 text-center">
-              Ready to start your fitness journey with {trainer.name}?
+              Ready to start your fitness journey with {parsedTrainer.name}?
             </Text>
           </View>
         </View>
@@ -363,7 +365,7 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
               </View>
             ) : (
               <Text className="text-black font-semibold text-lg">
-                Join {trainer.name}
+                Join {parsedTrainer.name}
               </Text>
             )}
           </TouchableOpacity>
