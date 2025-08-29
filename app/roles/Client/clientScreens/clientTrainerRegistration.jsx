@@ -11,6 +11,9 @@ import {
 } from 'react-native';
 import axios from 'axios';
 import { useLocalSearchParams } from 'expo-router';
+import { registerForTrainer } from '../../../services/clientRegisterTrainerService';
+import AsyncStorage from '@react-native-async-storage/async-storage';
+import { jwtDecodeClaims } from '../../../services/authService';
 
 const API_URL = "http://10.10.29.123:8080/api/clients";
 
@@ -134,16 +137,13 @@ const ClientRegisterWithTrainer = ({ route, navigation }) => {
         height: parseFloat(formData.height),
         gender: formData.gender.trim(),
         age: parseFloat(formData.age),
-        trainerId: parsedTrainer.id // Include trainer ID for registration
+        clientId: jwtDecodeClaims(AsyncStorage.getItem("AccessToken").id)  // Include trainer ID for registration
       };
 
-      const response = await axios.post(`${API_URL}/registerWithTrainer`, payload, {
-        headers: {
-          'Content-Type': 'application/json',
-          // Add authorization header with client token
-          // 'Authorization': `Bearer ${clientToken}`
-        }
-      });
+      registerForTrainer(payload, parsedTrainer.id)
+
+      
+       
 
       Alert.alert(
         'Registration Successful!', 
