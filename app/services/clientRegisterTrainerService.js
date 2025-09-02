@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 
-const API_URL = "http://10.10.42.111:8080/api/clients"
+const API_URL = "http://10.10.29.240:8080/api/clients"
 
 
 
