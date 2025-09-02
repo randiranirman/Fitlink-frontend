@@ -204,19 +204,7 @@ const ChooseRole = () => {
             </Pressable>
           </Animated.View>
 
-          {/* Skip Option */}
-          <Animated.View 
-            className="mt-6"
-            style={{
-              opacity: fadeAnim,
-            }}
-          >
-            <Pressable className="py-3">
-              <Text className="text-gray-500 text-center text-base">
-                I'll choose later
-              </Text>
-            </Pressable>
-          </Animated.View>
+         
         </Animated.View>
       </ScrollView>
     </View>
