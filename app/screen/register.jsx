@@ -90,22 +90,13 @@ const Register = () => {
     return { strength: 75, text: 'Good', color: 'bg-blue-500' };
   };
 
-  const handleRegister = () => {
-    if (isFormValid()) {
-      setIsLoading(true);
-      // Simulate registration process
-      registerUser( formData);
-    }
-  };
+  
 
   const handleSocialSignUp = (provider) => {
     console.log(`Sign up with ${provider}`);
   };
 
-  const handleSignIn = () => {
-    console.log('Navigate to sign in');
-  };
-
+  
   const passwordStrength = getPasswordStrength();
 
   return (
