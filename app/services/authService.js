@@ -3,9 +3,9 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import { router } from "expo-router";
 import { jwtDecode } from "jwt-decode";
 
-const API_URL = "http://10.10.29.240:8080/api/auth";
+const API_URL = "http://10.10.40.1:8080/api/auth";
 
-// 🔹 Helper to decode token claims
+// Helper to decode token claims
 export const jwtDecodeClaims = (token) => {
   try {
     if (!token) return null;
@@ -47,7 +47,7 @@ export const loginUser = async (requestBody) => {
   }
 };
 
-// 🔹 Register
+//  Register
 export const registerUser = async (requestBody) => {
   try {
     const response = await axios.post(`${API_URL}/register`, requestBody);

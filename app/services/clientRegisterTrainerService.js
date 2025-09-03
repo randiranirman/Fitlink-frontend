@@ -2,7 +2,7 @@ import axios from "axios"
 
 
 
-const API_URL = "http://10.10.29.240:8080/api/clients"
+const API_URL = "http://10.10.40.1:8080/api/clients"
 
 
 
@@ -40,3 +40,4 @@ export const registerForTrainer =  async  (requestBody,trainerId)  => {
   }
 
 }
+

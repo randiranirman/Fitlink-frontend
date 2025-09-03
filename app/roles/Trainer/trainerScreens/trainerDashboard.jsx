@@ -2,72 +2,97 @@ import { View, Text, Pressable, Animated, Dimensions, ScrollView } from "react-n
 import { useEffect, useRef, useState } from "react";
 import { router } from "expo-router";
 import TrainerSideBar from "../trainerComponent/trainerSideBar"
-
-
-
+import { getClientDetailsByTrainerId } from "../../../services/trainerService";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 // TrainerDashboard.js - Main Dashboard Component
 const TrainerDashboard = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
+  const [clients, setClients] = useState([]);
+  const [loading, setLoading] = useState(true);
 
-  // Hard-coded data for demonstration
-  const currentClients = [
-    { id: 1, name: 'Sarah Johnson', email: 'sarah@email.com', joinDate: '2024-08-15', progress: 78, status: 'active' },
-    { id: 2, name: 'Mike Chen', email: 'mike@email.com', joinDate: '2024-08-10', progress: 92, status: 'active' },
-    { id: 3, name: 'Emma Davis', email: 'emma@email.com', joinDate: '2024-08-20', progress: 65, status: 'active' },
-    { id: 4, name: 'Alex Rivera', email: 'alex@email.com', joinDate: '2024-08-25', progress: 88, status: 'active' },
-    { id: 5, name: 'Lisa Wong', email: 'lisa@email.com', joinDate: '2024-08-12', progress: 73, status: 'active' },
-  ];
+  useEffect(() => {
+    const fetchDetails = async () => {
+      try {
+        setLoading(true);
+        const clientData = await getClientDetailsByTrainerId();
+        console.log("Client data:", clientData);
+        
+        // Set the actual data from backend
+        if (clientData && Array.isArray(clientData)) {
+          setClients(clientData);
+        }
+      } catch (error) {
+        console.error("Error fetching client details:", error);
+      } finally {
+        setLoading(false);
+      }
+    }
 
-  const weeklyClients = [
-    { id: 6, name: 'Tom Wilson', email: 'tom@email.com', joinDate: '2024-08-26' },
-    { id: 7, name: 'Anna Kumar', email: 'anna@email.com', joinDate: '2024-08-24' },
-    { id: 8, name: 'David Lee', email: 'david@email.com', joinDate: '2024-08-23' },
-  ];
+    fetchDetails();
+  }, [])
 
-  const monthlyClients = [
-    { id: 9, name: 'Grace Taylor', email: 'grace@email.com', joinDate: '2024-08-05' },
-    { id: 10, name: 'Ben Martinez', email: 'ben@email.com', joinDate: '2024-08-08' },
-    { id: 11, name: 'Sophie Brown', email: 'sophie@email.com', joinDate: '2024-08-03' },
-    { id: 12, name: 'Ryan Clark', email: 'ryan@email.com', joinDate: '2024-08-01' },
-    { id: 13, name: 'Maya Patel', email: 'maya@email.com', joinDate: '2024-08-07' },
-  ];
+  // Helper function to get initials from name
+  const getInitials = (name) => {
+    return name.split(' ').map(n => n[0]).join('').toUpperCase();
+  };
 
-  const renderClientCard = (client, showProgress = false) => (
-    <View key={client.id} className="bg-zinc-800 p-4 rounded-xl mb-3 border border-zinc-700">
+  // Helper function to get clients joined this week
+  const getWeeklyClients = () => {
+    const oneWeekAgo = new Date();
+    oneWeekAgo.setDate(oneWeekAgo.getDate() - 7);
+    
+    return clients.filter(client => {
+      // Since we don't have joinDate in the response, we'll return empty array
+      // You might want to add joinDate to your backend response
+      return false;
+    });
+  };
+
+  // Helper function to get clients joined this month
+  const getMonthlyClients = () => {
+    const oneMonthAgo = new Date();
+    oneMonthAgo.setMonth(oneMonthAgo.getMonth() - 1);
+    
+    return clients.filter(client => {
+      // Since we don't have joinDate in the response, we'll return empty array
+      // You might want to add joinDate to your backend response
+      return false;
+    });
+  };
+
+  const renderClientCard = (client, showProgress = false, index = 0) => (
+    <View key={client.clientEmail || `client-${index}`} className="bg-zinc-800 p-4 rounded-xl mb-3 border border-zinc-700">
       <View className="flex-row items-center justify-between mb-2">
         <View className="flex-row items-center flex-1">
           <View className="w-12 h-12 bg-green-500 rounded-full justify-center items-center mr-3">
             <Text className="text-black font-bold text-lg">
-              {client.name.split(' ').map(n => n[0]).join('')}
+              {getInitials(client.clientName || 'N/A')}
             </Text>
           </View>
           <View className="flex-1">
-            <Text className="text-white font-semibold text-base">{client.name}</Text>
-            <Text className="text-zinc-400 text-sm">{client.email}</Text>
+            <Text className="text-white font-semibold text-base">{client.clientName || 'No Name'}</Text>
+            <Text className="text-zinc-400 text-sm">{client.clientEmail || 'No Email'}</Text>
+            <Text className="text-zinc-400 text-xs">
+              Age: {client.clientAge || 'N/A'} • {client.clientGender || 'N/A'} • {client.clientWeight || 'N/A'}kg
+            </Text>
           </View>
         </View>
-        <Text className="text-zinc-500 text-xs">
-          {new Date(client.joinDate).toLocaleDateString()}
-        </Text>
+        <View className="items-end">
+          <Text className="text-zinc-500 text-xs">{client.clientContactNumber || 'No Phone'}</Text>
+          <Text className="text-zinc-500 text-xs">{client.clientAddress || 'No Address'}</Text>
+        </View>
       </View>
-      
-      {showProgress && (
-        <View className="mt-3">
-          <View className="flex-row justify-between mb-2">
-            <Text className="text-zinc-400 text-sm">Progress</Text>
-            <Text className="text-green-400 font-semibold text-sm">{client.progress}%</Text>
-          </View>
-          <View className="bg-zinc-700 rounded-full h-2">
-            <View 
-              className="bg-green-500 h-2 rounded-full" 
-              style={{ width: `${client.progress}%` }}
-            />
-          </View>
-        </View>
-      )}
     </View>
   );
+
+  if (loading) {
+    return (
+      <View className="flex-1 bg-black justify-center items-center">
+        <Text className="text-white text-lg">Loading clients...</Text>
+      </View>
+    );
+  }
 
   return (
     <View className="flex-1 bg-black">
@@ -102,40 +127,51 @@ const TrainerDashboard = () => {
         <View className="px-6 py-6">
           <View className="flex-row justify-between mb-6">
             <View className="bg-zinc-900 p-4 rounded-xl flex-1 mr-2 border border-zinc-800">
-              <Text className="text-green-400 text-2xl font-bold">24</Text>
+              <Text className="text-green-400 text-2xl font-bold">{clients.length}</Text>
               <Text className="text-zinc-400 text-sm">Total Clients</Text>
             </View>
             <View className="bg-zinc-900 p-4 rounded-xl flex-1 mx-1 border border-zinc-800">
-              <Text className="text-green-400 text-2xl font-bold">3</Text>
+              <Text className="text-green-400 text-2xl font-bold">{getWeeklyClients().length}</Text>
               <Text className="text-zinc-400 text-sm">This Week</Text>
             </View>
             <View className="bg-zinc-900 p-4 rounded-xl flex-1 ml-2 border border-zinc-800">
-              <Text className="text-green-400 text-2xl font-bold">5</Text>
+              <Text className="text-green-400 text-2xl font-bold">{getMonthlyClients().length}</Text>
               <Text className="text-zinc-400 text-sm">This Month</Text>
             </View>
           </View>
         </View>
 
-        {/* Current Clients */}
+        {/* All Clients */}
         <View className="px-6 mb-8">
           <View className="flex-row items-center justify-between mb-4">
-            <Text className="text-white text-xl font-bold">My Clients</Text>
-            <Text className="text-green-400 text-sm font-medium">View All</Text>
+            <Text className="text-white text-xl font-bold">My Clients ({clients.length})</Text>
           </View>
-          {currentClients.map(client => renderClientCard(client, true))}
+          
+          {clients.length > 0 ? (
+            clients.map(client => renderClientCard(client, false))
+          ) : (
+            <View className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 items-center">
+              <Text className="text-zinc-400 text-base">No clients found</Text>
+              <Text className="text-zinc-500 text-sm mt-2">Clients will appear here once they join</Text>
+            </View>
+          )}
         </View>
 
-        {/* Weekly Clients */}
-        <View className="px-6 mb-8">
-          <Text className="text-white text-xl font-bold mb-4">Joined This Week</Text>
-          {weeklyClients.map(client => renderClientCard(client))}
-        </View>
+        {/* Weekly Clients - Only show if there are any */}
+        {getWeeklyClients().length > 0 && (
+          <View className="px-6 mb-8">
+            <Text className="text-white text-xl font-bold mb-4">Joined This Week</Text>
+            {getWeeklyClients().map(client => renderClientCard(client))}
+          </View>
+        )}
 
-        {/* Monthly Clients */}
-        <View className="px-6 mb-8">
-          <Text className="text-white text-xl font-bold mb-4">Joined This Month</Text>
-          {monthlyClients.map(client => renderClientCard(client))}
-        </View>
+        {/* Monthly Clients - Only show if there are any */}
+        {getMonthlyClients().length > 0 && (
+          <View className="px-6 mb-8">
+            <Text className="text-white text-xl font-bold mb-4">Joined This Month</Text>
+            {getMonthlyClients().map(client => renderClientCard(client))}
+          </View>
+        )}
 
         {/* Bottom Padding */}
         <View className="h-20"></View>
@@ -143,4 +179,5 @@ const TrainerDashboard = () => {
     </View>
   );
 }
+
 export default TrainerDashboard;

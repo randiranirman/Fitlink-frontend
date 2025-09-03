@@ -15,7 +15,7 @@ import { registerForTrainer } from '../../../services/clientRegisterTrainerServi
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import { jwtDecodeClaims } from '../../../services/authService';
 
-const API_URL = "http://10.10.29.123:8080/api/clients";
+
 
 const ClientRegisterWithTrainer = ({ route, navigation }) => {
   // Get trainer data from navigation params
