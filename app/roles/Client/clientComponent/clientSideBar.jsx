@@ -42,6 +42,7 @@ const ClientSideBar = ({ isVisible, onClose, onNavigate }) => {
     { id: 'home', title: 'Home', icon: '🏠', screen: 'Home' },
     { id: 'searchTrainer', title: 'Search Trainers', icon: '📊', screen: '../clientScreens/clientSearchTrainer' },
     { id: 'profile', title: 'Profile', icon: '👤', screen: 'Profile' },
+    {id:'viewDetails',title:'ViewDetails',icon: '👤', screen:'../clientScreens/viewClientDetails'},
     { id: 'settings', title: 'Settings', icon: '⚙️', screen: 'Settings' },
     { id: 'logout', title: 'Log Out', icon: '🚪', screen: 'Logout', danger: true },
     

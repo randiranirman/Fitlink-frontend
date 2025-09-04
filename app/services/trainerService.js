@@ -3,7 +3,7 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 import axios from "axios";
 import { jwtDecodeClaims } from "./authService";
 
- const API_URL = "http://10.10.40.1:8080/api/trainer/getClientDetails"
+ const API_URL = "http://192.168.8.108:8080/api/trainer/getClientDetails"
 
 
 
