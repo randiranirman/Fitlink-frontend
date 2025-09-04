@@ -9,7 +9,7 @@ import {
   Alert,
   ActivityIndicator
 } from 'react-native';
-import axios from 'axios';
+
 import { useLocalSearchParams } from 'expo-router';
 import { registerForTrainer } from '../../../services/clientRegisterTrainerService';
 import AsyncStorage from '@react-native-async-storage/async-storage';
