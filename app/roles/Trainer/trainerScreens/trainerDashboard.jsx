@@ -10,6 +10,14 @@ const TrainerDashboard = () => {
   const [sidebarVisible, setSidebarVisible] = useState(false);
   const [clients, setClients] = useState([]);
   const [loading, setLoading] = useState(true);
+  
+  const selectClient = (client) => {
+    router.push({
+      pathname: "../trainerScreens/assignMealsAndWorkout",
+      params: { client: JSON.stringify(client) },
+    });
+    console.log("Selected client:", client);
+  };
 
   useEffect(() => {
     const fetchDetails = async () => {
@@ -62,7 +70,17 @@ const TrainerDashboard = () => {
   };
 
   const renderClientCard = (client, showProgress = false, index = 0) => (
-    <View key={client.clientEmail || `client-${index}`} className="bg-zinc-800 p-4 rounded-xl mb-3 border border-zinc-700">
+    <Pressable 
+      key={client.clientEmail || `client-${index}`} 
+      onPress={() => selectClient(client)}
+      className="bg-zinc-800 p-4 rounded-xl mb-3 border border-zinc-700 active:bg-zinc-700"
+      style={({ pressed }) => [
+        {
+          opacity: pressed ? 0.8 : 1,
+          transform: [{ scale: pressed ? 0.98 : 1 }]
+        }
+      ]}
+    >
       <View className="flex-row items-center justify-between mb-2">
         <View className="flex-row items-center flex-1">
           <View className="w-12 h-12 bg-green-500 rounded-full justify-center items-center mr-3">
@@ -81,9 +99,13 @@ const TrainerDashboard = () => {
         <View className="items-end">
           <Text className="text-zinc-500 text-xs">{client.clientContactNumber || 'No Phone'}</Text>
           <Text className="text-zinc-500 text-xs">{client.clientAddress || 'No Address'}</Text>
+          {/* Add a visual indicator that the card is pressable */}
+          <View className="mt-2 bg-green-500 px-2 py-1 rounded-md">
+            <Text className="text-black text-xs font-semibold">Assign Meals</Text>
+          </View>
         </View>
       </View>
-    </View>
+    </Pressable>
   );
 
   if (loading) {
@@ -145,10 +167,11 @@ const TrainerDashboard = () => {
         <View className="px-6 mb-8">
           <View className="flex-row items-center justify-between mb-4">
             <Text className="text-white text-xl font-bold">My Clients ({clients.length})</Text>
+            <Text className="text-zinc-400 text-sm">Tap to assign meals</Text>
           </View>
           
           {clients.length > 0 ? (
-            clients.map(client => renderClientCard(client, false))
+            clients.map((client, index) => renderClientCard(client, false, index))
           ) : (
             <View className="bg-zinc-800 p-6 rounded-xl border border-zinc-700 items-center">
               <Text className="text-zinc-400 text-base">No clients found</Text>
@@ -161,7 +184,7 @@ const TrainerDashboard = () => {
         {getWeeklyClients().length > 0 && (
           <View className="px-6 mb-8">
             <Text className="text-white text-xl font-bold mb-4">Joined This Week</Text>
-            {getWeeklyClients().map(client => renderClientCard(client))}
+            {getWeeklyClients().map((client, index) => renderClientCard(client, false, index))}
           </View>
         )}
 
@@ -169,7 +192,7 @@ const TrainerDashboard = () => {
         {getMonthlyClients().length > 0 && (
           <View className="px-6 mb-8">
             <Text className="text-white text-xl font-bold mb-4">Joined This Month</Text>
-            {getMonthlyClients().map(client => renderClientCard(client))}
+            {getMonthlyClients().map((client, index) => renderClientCard(client, false, index))}
           </View>
         )}
 
