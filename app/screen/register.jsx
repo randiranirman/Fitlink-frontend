@@ -47,6 +47,11 @@ const Register = () => {
     setIsLoading(false);
   }
 };
+const handleSignIn =() => {
+
+
+
+}
 
 
   useEffect(() => {
@@ -351,7 +356,7 @@ const Register = () => {
             <Text className="text-gray-400 text-base">
               Already have an account? 
             </Text>
-            <Pressable onPress={handleSignIn} className="ml-1">
+            <Pressable  className="ml-1">
               <Text className="text-green-500 font-semibold text-base">
                 Sign In
               </Text>
